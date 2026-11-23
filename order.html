@@ -36,6 +36,13 @@ textarea{min-height:84px;resize:vertical}
 .done h2{font-size:21px;margin:0 0 6px;color:#1C1C1C;text-transform:none;letter-spacing:0}
 .done p{color:#4A4A4A;line-height:1.55;margin:6px 0}
 .ref{display:inline-block;background:#F5F3EF;border-radius:8px;padding:6px 12px;font-weight:800;letter-spacing:.06em;margin-top:6px}
+.pay-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.pay-tabs button{border:1px solid #D8D5CE;background:#fff;border-radius:10px;padding:10px 4px;font:700 13px 'Plus Jakarta Sans',system-ui,sans-serif;color:#1C1C1C;cursor:pointer}
+.pay-tabs button.on{border-color:var(--pc);background:var(--pc);color:#fff}
+.pay-img{display:block;width:100%;max-width:420px;margin:0 auto;border-radius:12px;border:1px solid #EEE}
+.pay-act{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.pay-act a{display:inline-block;text-decoration:none}
+.pay-note{font-size:12.5px;color:#6A6A6A;text-align:center;margin:10px 0 0;line-height:1.5}
 .foot{text-align:center;color:#8A8A8A;font-size:12px;margin-top:10px}
 </style>
 </head>
@@ -77,6 +84,11 @@ textarea{min-height:84px;resize:vertical}
       <label for="notes">Delivery notes / instructions</label>
       <textarea id="notes" placeholder="e.g. 3rd floor, no elevator · call before arriving · gate code"></textarea>
     </div>
+    <div class="card" id="payCard">
+      <h2>Payment</h2>
+      <div class="hint" style="margin:0 0 12px">Scan or save the QR code of your bank or e-wallet. Any bank app or e-wallet that supports InstaPay can pay to these.</div>
+      <div class="pay-box"></div>
+    </div>
     <div class="trap"><label>Website</label><input id="website" tabindex="-1" autocomplete="off"></div>
     <div class="err" id="err"></div>
     <button class="submit" id="send" type="submit">Send my delivery details</button>
@@ -88,10 +100,34 @@ textarea{min-height:84px;resize:vertical}
     <p>Our team will contact you to confirm your delivery date.</p>
     <p>Your reference number:</p>
     <div class="ref" id="ref"></div>
-    <p style="margin-top:16px;font-size:13px;color:#6A6A6A">You can now close this page.</p>
+    <p style="margin-top:16px;font-size:13px;color:#6A6A6A">If you haven't paid yet, you can pay with any of these:</p>
+    <div class="pay-box" style="margin-top:10px;text-align:left"></div>
+    <p class="pay-note">Please send a screenshot of your payment to our Facebook page with your reference number.</p>
   </div>
 </div>
 <script>
+
+var PAY=[
+  {k:'ub',name:'UnionBank',img:'qr-unionbank.jpg',c:'#F29321'},
+  {k:'bpi',name:'BPI',img:'qr-bpi.jpg',c:'#E84A4A'},
+  {k:'bdo',name:'BDO',img:'qr-bdo.jpg',c:'#0B4EA2'},
+  {k:'gcash',name:'GCash',img:'qr-gcash.jpg',c:'#0A5EE6'}];
+function payBox(box){
+  var tabs=document.createElement('div'); tabs.className='pay-tabs';
+  var img=document.createElement('img'); img.className='pay-img'; img.alt='Payment QR code';
+  var act=document.createElement('div'); act.className='pay-act';
+  var save=document.createElement('a'); save.className='btn2'; save.textContent='⬇ Save QR';
+  var open=document.createElement('a'); open.className='btn2'; open.textContent='Open full size'; open.target='_blank';
+  act.append(save,open);
+  function pick(p){
+    [].forEach.call(tabs.children,function(b){ b.classList.toggle('on',b.dataset.k===p.k); });
+    img.src=p.img; img.alt=p.name+' payment QR code'; save.href=p.img; save.setAttribute('download','Aldeco-'+p.name+'-QR.jpg'); open.href=p.img;
+  }
+  PAY.forEach(function(p){ var b=document.createElement('button'); b.type='button'; b.textContent=p.name; b.dataset.k=p.k; b.style.setProperty('--pc',p.c); b.onclick=function(){pick(p)}; tabs.append(b); });
+  box.append(tabs,img,act); pick(PAY[0]);
+}
+[].forEach.call(document.querySelectorAll('.pay-box'),payBox);
+PAY.forEach(function(p){ var i=new Image(); i.src=p.img; });
 var API='https://script.google.com/macros/s/AKfycbwJlrrAoaWLxRU8VgcgKAkXRw3ahp6T499y4LH9yH2OD7Jw9zupcMPFZqDZjmavRqOV/exec';
 var q=new URLSearchParams(location.search);
 var $=function(id){return document.getElementById(id)};
