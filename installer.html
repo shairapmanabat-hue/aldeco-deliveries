@@ -65,6 +65,70 @@ textarea{min-height:70px;resize:vertical}
 .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--cream2);color:var(--ink)}
 .status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:4px;color:#fff;background:var(--sc)}
 .empty{color:var(--muted);font-size:12px;text-align:center;padding:14px 6px}
+/* Google-Calendar style month view */
+.gc{display:flex;gap:0;background:#fff;border:1px solid #DADCE0;border-radius:8px;overflow:hidden;font-family:'Google Sans',Roboto,Arial,sans-serif;color:#3C4043}
+.gc-side{width:250px;flex:none;padding:14px 12px 18px 14px;border-right:1px solid #F1F3F4}
+.gc-create{display:inline-flex;align-items:center;gap:12px;height:52px;padding:0 22px 0 16px;border-radius:16px;border:none;background:#fff;box-shadow:0 1px 3px rgba(60,64,67,.3),0 4px 8px 3px rgba(60,64,67,.15);font:500 14px 'Google Sans',Roboto,Arial,sans-serif;color:#3C4043;cursor:pointer;margin-bottom:22px}
+.gc-create:hover{background:#F8F9FA;box-shadow:0 1px 3px rgba(60,64,67,.3),0 6px 10px 4px rgba(60,64,67,.15)}
+.gc-create b{font-size:26px;font-weight:300;line-height:1;color:#3C4043}
+.gc-mini{margin:0 0 20px}
+.gc-mini .mh{display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:500;padding:0 2px 6px 8px}
+.gc-mini table{border-collapse:collapse;width:100%;table-layout:fixed}
+.gc-mini th{font-size:10px;font-weight:500;color:#70757A;height:24px}
+.gc-mini td{text-align:center;padding:1px 0}
+.gc-mini td span{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;font-size:10.5px;cursor:pointer;color:#3C4043}
+.gc-mini td span:hover{background:#F1F3F4}
+.gc-mini td.o span{color:#70757A}
+.gc-mini td.has span{font-weight:700}
+.gc-mini td.t span{background:#1A73E8;color:#fff;font-weight:500}
+.gc-mini td.sel span{background:#D2E3FC;color:#185ABC}
+.gc-ib{width:28px;height:28px;border-radius:50%;border:none;background:none;cursor:pointer;font-size:18px;color:#5F6368;display:inline-grid;place-items:center}
+.gc-ib:hover{background:#F1F3F4}
+.gc-cals h4{font:500 14px 'Google Sans',Roboto,Arial,sans-serif;margin:4px 0 6px 8px;color:#3C4043}
+.gc-cals label{display:flex;align-items:center;gap:12px;padding:5px 8px;border-radius:4px;font-size:14px;cursor:pointer;user-select:none}
+.gc-cals label:hover{background:#F1F3F4}
+.gc-cb{width:16px;height:16px;border-radius:2px;border:2px solid var(--c);display:inline-grid;place-items:center;flex:none;color:#fff;font-size:12px;line-height:1;font-weight:700}
+.gc-cb.on{background:var(--c)}
+.gc-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.gc-top{display:flex;align-items:center;gap:6px;padding:10px 16px;border-bottom:1px solid #DADCE0;flex-wrap:wrap}
+.gc-today{height:36px;padding:0 20px;border:1px solid #DADCE0;border-radius:18px;background:#fff;font:500 14px 'Google Sans',Roboto,Arial,sans-serif;color:#3C4043;cursor:pointer;margin-right:10px}
+.gc-today:hover{background:#F8F9FA}
+.gc-top .gc-ib{width:36px;height:36px;font-size:22px}
+.gc-title{font:400 22px 'Google Sans',Roboto,Arial,sans-serif;color:#3C4043;margin-left:10px;white-space:nowrap}
+.gc-seg{margin-left:auto;display:inline-flex;border:1px solid #DADCE0;border-radius:18px;overflow:hidden}
+.gc-seg button{height:34px;padding:0 16px;border:none;background:#fff;font:500 13px 'Google Sans',Roboto,Arial,sans-serif;color:#3C4043;cursor:pointer}
+.gc-seg button.on{background:#E8F0FE;color:#185ABC}
+.gc-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));flex:1}
+.gc-cell{border-right:1px solid #DADCE0;border-bottom:1px solid #DADCE0;min-height:132px;padding:0 0 6px;cursor:pointer;min-width:0;position:relative}
+.gc-cell:nth-child(7n){border-right:none}
+.gc-cell .hd{text-align:center;padding-top:6px;line-height:1.2}
+.gc-cell .wd{font-size:11px;font-weight:500;color:#70757A;letter-spacing:.8px;display:block;margin-bottom:2px}
+.gc-cell .dn{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 4px;border-radius:12px;font-size:12px;font-weight:500;color:#3C4043;margin-bottom:4px}
+.gc-cell .dn:hover{background:#F1F3F4}
+.gc-cell.o .dn{color:#70757A}
+.gc-cell.t .dn{background:#1A73E8;color:#fff;min-width:28px;height:28px;border-radius:50%;font-size:13px}
+.gc-ev{display:block;margin:0 6px 2px 2px;padding:0 8px;height:22px;line-height:22px;border-radius:4px;background:var(--c);color:#fff;font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.gc-ev:hover{filter:brightness(.93);box-shadow:0 1px 3px rgba(60,64,67,.35)}
+.gc-ev.p{background:#fff;color:var(--c);border:1px solid var(--c);line-height:20px}
+.gc-ev.done{opacity:.72}
+.gc-more{display:block;white-space:nowrap;overflow:hidden;margin:2px 6px 0 2px;padding:0 8px;height:20px;line-height:20px;border-radius:4px;font-size:12px;font-weight:500;color:#3C4043;cursor:pointer}
+.gc-more:hover{background:#F1F3F4}
+.gc-pop{position:fixed;z-index:60;width:240px;max-height:70vh;overflow:auto;background:#fff;border-radius:8px;box-shadow:0 24px 38px 3px rgba(0,0,0,.14),0 9px 46px 8px rgba(0,0,0,.12),0 11px 15px -7px rgba(0,0,0,.2);padding:10px 8px 12px;font-family:'Google Sans',Roboto,Arial,sans-serif}
+.gc-pop .ph{text-align:center;margin-bottom:8px;position:relative}
+.gc-pop .ph .wd{font-size:11px;font-weight:500;color:#70757A;letter-spacing:.8px}
+.gc-pop .ph .big{font-size:26px;color:#3C4043;line-height:1.3}
+.gc-pop .ph .x{position:absolute;right:0;top:-2px}
+.gc-pop .gc-ev{margin:0 0 3px}
+.gc-pop .add{display:block;width:100%;margin-top:8px;border:none;background:#F1F3F4;border-radius:4px;padding:7px;font:500 13px 'Google Sans',Roboto,Arial,sans-serif;color:#1A73E8;cursor:pointer}
+@media (max-width:900px){
+  .gc-side{display:none}
+  .gc-title{font-size:18px}
+  .gc-cell{min-height:96px}
+  .gc-ev{font-size:10.5px;padding:0 4px;height:18px;line-height:18px;margin:0 2px 2px}
+  .gc-ev.p{line-height:16px}
+  .gc-more{font-size:10.5px;margin:0 2px}
+}
+
 /* calendar */
 .calwrap{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
 table.cal{border-collapse:collapse;width:100%;min-width:980px;table-layout:fixed}
@@ -416,7 +480,16 @@ let db=null, user=null, isOwnerViewer=false, canWrite=true;
 const me={id:null, role:null};
 let deliveries=[], members={}, config={trucks:[]}, names={};
 let loaded={d:false,m:false,c:false};
+const GC_CALS=[
+  {k:'confirmed',name:'Confirmed deliveries',c:'#F4511E',st:['confirmed']},
+  {k:'onroad',name:'Loaded / Out for delivery',c:'#F09300',st:['loaded','out']},
+  {k:'delivered',name:'Delivered',c:'#0B8043',st:['delivered']},
+  {k:'pending',name:'Not yet confirmed',c:'#7986CB',st:['requested','proposed']},
+];
 let monthCursor=todayStr().slice(0,7);
+let gcView='month', gcHide=new Set(), gcMiniCursor=null;
+try{ gcHide=new Set(JSON.parse(localStorage.getItem('aldecoGcHide')||'[]')); }catch(e){}
+
 let instRange='next';
 let mode='full', onlyMine=false, view='board', weekStart=mondayOf(todayStr()), routeDate=todayStr(), routeTruck='all', search='', openId=null, showCancelled=false;
 
@@ -584,7 +657,8 @@ function render(){
   main.replaceChildren();
   if(!loaded.d && db){ main.append(h('div',{class:'empty',style:'padding:40px'},'Loading deliveries…')); }
   else if(view==='board') main.append(renderBoard());
-  else if(view==='calendar'||view==='sales-calendar'||view==='installer-week') main.append(renderCalendar());
+  else if(view==='calendar'||view==='sales-calendar') main.append(renderGCal());
+  else if(view==='installer-week') main.append(renderCalendar());
   else if(view==='installer') main.append(renderInstaller());
   else if(view==='route') main.append(renderRoute());
   else if(view==='team') main.append(trucksPanel());
@@ -651,11 +725,11 @@ function renderBoard(){
   return wrap;
 }
 
-function renderCalendar(){
+function renderCalendar(weekOnly){
   const wrap=h('div');
   const days=[...Array(7)].map((_,i)=>addDays(weekStart,i));
   const t=todayStr();
-  wrap.append(h('div',{class:'toolbar'},
+  if(!weekOnly) wrap.append(h('div',{class:'toolbar'},
     h('button',{class:'btn',onclick:()=>{weekStart=addDays(weekStart,-7);render()}},'‹ Prev week'),
     h('button',{class:'btn',onclick:()=>{weekStart=mondayOf(todayStr());render()}},'This week'),
     h('button',{class:'btn',onclick:()=>{weekStart=addDays(weekStart,7);render()}},'Next week ›'),
@@ -692,9 +766,132 @@ function renderCalendar(){
   });
   tbl.append(pr);
   wrap.append(h('div',{class:'calwrap'},tbl));
-  wrap.append(renderMonth());
-  if(!trucks.length) wrap.insertBefore(h('div',{class:'infobox',style:'margin-top:12px;max-width:720px'},'Tip: add your drivers and how many drops each can do per day under ',h('a',{href:mode==='installer'?'#installer-trucks':'#sales-trucks'},'Drivers'),' — the calendar will then show one row per driver and warn you when a day is full.'), wrap.lastChild);
+  if(!weekOnly) wrap.append(renderMonth());
+  if(!weekOnly && !trucks.length) wrap.insertBefore(h('div',{class:'infobox',style:'margin-top:12px;max-width:720px'},'Tip: add your drivers and how many drops each can do per day under ',h('a',{href:mode==='installer'?'#installer-trucks':'#sales-trucks'},'Drivers'),' — the calendar will then show one row per driver and warn you when a day is full.'), wrap.lastChild);
   return wrap;
+}
+
+// ===== Google-Calendar style month view =====
+function gcSaveHide(){ try{ localStorage.setItem('aldecoGcHide',JSON.stringify([...gcHide])); }catch(e){} }
+function gcCalOf(st){ return GC_CALS.find(c=>c.st.includes(st)); }
+function gcDateOf(d){ return d.status==='requested'?d.preferredDate:d.status==='proposed'?d.proposedDate:d.date; }
+function gcEventsOn(day){
+  return deliveries.filter(d=>{ if(d.status==='cancelled') return false; const c=gcCalOf(d.status); if(!c||gcHide.has(c.k)) return false; return gcDateOf(d)===day; })
+    .sort((a,b)=>(SCHEDULED.includes(a.status)?0:1)-(SCHEDULED.includes(b.status)?0:1)||(WIN_ORDER[a.window]??3)-(WIN_ORDER[b.window]??3)||String(a.soNo||'').localeCompare(String(b.soNo||''),undefined,{numeric:true}));
+}
+function gcLabel(d){
+  const so=String(d.soNo||'').trim();
+  return (so?so+' - ':'')+(d.customer||'(no name)')+' - Delivery';
+}
+function gcChip(d){
+  const c=gcCalOf(d.status);
+  const pend=!SCHEDULED.includes(d.status);
+  return h('div',{class:'gc-ev'+(pend?' p':'')+(d.status==='delivered'?' done':''),style:'--c:'+c.c,
+    title:gcLabel(d)+' · '+STATUS[d.status].label+(d.driverName||d.truckId?' · '+(d.driverName||truckName(d.truckId)):''),
+    onclick:e=>{e.stopPropagation();gcClosePop();openDrawer(d.id)}},gcLabel(d));
+}
+function gcClosePop(){ document.querySelectorAll('.gc-pop').forEach(p=>p.remove()); document.removeEventListener('mousedown',gcOutside,true); }
+function gcOutside(e){ if(!e.target.closest('.gc-pop')) gcClosePop(); }
+function gcNew(day){
+  gcClosePop(); requestForm();
+  if(day) setTimeout(()=>{ const inp=document.querySelector('#modal input[type=date]'); if(inp){ inp.value=day; inp.dispatchEvent(new Event('input',{bubbles:true})); inp.dispatchEvent(new Event('change',{bubbles:true})); } },40);
+}
+function gcPopup(day,anchor){
+  gcClosePop();
+  const dt=parseD(day);
+  const pop=h('div',{class:'gc-pop'},
+    h('div',{class:'ph'},
+      h('div',{class:'wd'},dt.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase()),
+      h('div',{class:'big'},dt.getDate()),
+      h('button',{class:'gc-ib x',title:'Close',onclick:gcClosePop},'×')),
+    gcEventsOn(day).map(gcChip),
+    gcEventsOn(day).length?null:h('div',{style:'text-align:center;color:#70757A;font-size:13px;padding:6px'},'No deliveries'),
+    h('button',{class:'add',onclick:()=>gcNew(day)},'+ New delivery on this day'));
+  document.body.append(pop);
+  const r=anchor.getBoundingClientRect();
+  let left=r.left+r.width/2-120, top=r.top-8;
+  left=Math.max(8,Math.min(left,window.innerWidth-248));
+  const ph=pop.offsetHeight; if(top+ph>window.innerHeight-8) top=Math.max(8,window.innerHeight-8-ph);
+  pop.style.left=left+'px'; pop.style.top=top+'px';
+  setTimeout(()=>document.addEventListener('mousedown',gcOutside,true),0);
+}
+function gcMini(){
+  const cur=gcMiniCursor||monthCursor;
+  const [y,m]=cur.split('-').map(Number);
+  const t=todayStr();
+  const start=addDays(dstr(new Date(y,m-1,1)),-new Date(y,m-1,1).getDay());
+  const mv=n=>{ const d=new Date(y,m-1+n,1); gcMiniCursor=d.getFullYear()+'-'+pad(d.getMonth()+1); render(); };
+  const tbl=h('table',null,h('tr',null,['S','M','T','W','T','F','S'].map(x=>h('th',null,x))));
+  let day=start;
+  for(let w=0;w<6;w++){
+    const tr=h('tr');
+    for(let k=0;k<7;k++){
+      const dd=day; const has=deliveries.some(d=>SCHEDULED.includes(d.status)&&d.date===dd);
+      tr.append(h('td',{class:(dd.slice(0,7)!==cur?'o ':'')+(dd===t?'t ':'')+(has?'has':'')},
+        h('span',{onclick:()=>{monthCursor=dd.slice(0,7);gcMiniCursor=null;render();}},parseD(dd).getDate())));
+      day=addDays(day,1);
+    }
+    tbl.append(tr);
+  }
+  return h('div',{class:'gc-mini'},
+    h('div',{class:'mh'},h('span',null,new Date(y,m-1,1).toLocaleDateString('en-US',{month:'long',year:'numeric'})),
+      h('span',null,h('button',{class:'gc-ib',onclick:()=>mv(-1)},'‹'),h('button',{class:'gc-ib',onclick:()=>mv(1)},'›'))),
+    tbl);
+}
+function renderGCal(){
+  gcClosePop();
+  const [y,m]=monthCursor.split('-').map(Number);
+  const t=todayStr();
+  const shift=n=>{ if(gcView==='week'){ weekStart=addDays(weekStart,7*n); } else { const d=new Date(y,m-1+n,1); monthCursor=d.getFullYear()+'-'+pad(d.getMonth()+1); } gcMiniCursor=null; render(); };
+  const side=h('div',{class:'gc-side'},
+    h('button',{class:'gc-create',onclick:()=>gcNew()},h('b',null,'+'),'Create'),
+    gcMini(),
+    h('div',{class:'gc-cals'},h('h4',null,'My calendars'),
+      GC_CALS.map(c=>{ const on=!gcHide.has(c.k);
+        return h('label',{onclick:()=>{ on?gcHide.add(c.k):gcHide.delete(c.k); gcSaveHide(); render(); }},
+          h('span',{class:'gc-cb'+(on?' on':''),style:'--c:'+c.c},on?'✓':''),c.name); })));
+  const title=gcView==='week'
+    ? fmtD(weekStart,{month:'short',day:'numeric'})+' – '+fmtD(addDays(weekStart,6),{month:'short',day:'numeric',year:'numeric'})
+    : new Date(y,m-1,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  const top=h('div',{class:'gc-top'},
+    h('button',{class:'gc-today',onclick:()=>{monthCursor=t.slice(0,7);weekStart=mondayOf(t);gcMiniCursor=null;render();}},'Today'),
+    h('button',{class:'gc-ib',title:'Previous',onclick:()=>shift(-1)},'‹'),
+    h('button',{class:'gc-ib',title:'Next',onclick:()=>shift(1)},'›'),
+    h('span',{class:'gc-title'},title),
+    h('span',{class:'gc-seg'},
+      h('button',{class:gcView==='month'?'on':'',onclick:()=>{gcView='month';render();}},'Month'),
+      h('button',{class:gcView==='week'?'on':'',onclick:()=>{gcView='week';render();}},'Drivers week')));
+  const main=h('div',{class:'gc-main'},top);
+  if(gcView==='week'){
+    const wk=renderCalendar(true);
+    wk.style.padding='12px';
+    main.append(wk);
+  } else {
+    const first=new Date(y,m-1,1);
+    const start=addDays(dstr(first),-first.getDay());
+    const lastDay=dstr(new Date(y,m,0));
+    const weeks=Math.ceil((first.getDay()+new Date(y,m,0).getDate())/7);
+    const grid=h('div',{class:'gc-grid'});
+    const MAX=window.innerWidth<900?3:4;
+    let day=start;
+    for(let i=0;i<weeks*7;i++){
+      const dd=day, dt=parseD(dd);
+      const evs=gcEventsOn(dd);
+      const show=evs.length>MAX?evs.slice(0,MAX-1):evs;
+      const dnTxt=dt.getDate()===1?dt.toLocaleDateString('en-US',{month:'short'})+' 1':String(dt.getDate());
+      const cell=h('div',{class:'gc-cell'+(dd.slice(0,7)!==monthCursor?' o':'')+(dd===t?' t':''),
+          onclick:e=>gcPopup(dd,e.currentTarget)},
+        h('div',{class:'hd'},
+          i<7?h('span',{class:'wd'},dt.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase()):null,
+          h('span',{class:'dn'},dnTxt)),
+        show.map(gcChip),
+        evs.length>show.length?h('div',{class:'gc-more',onclick:e=>{e.stopPropagation();gcPopup(dd,e.currentTarget.parentNode)}},(window.innerWidth<900?'+'+(evs.length-show.length):(evs.length-show.length)+' more')):null);
+      grid.append(cell);
+      day=addDays(day,1);
+    }
+    main.append(grid);
+  }
+  return h('div',{class:'gc'},side,main);
 }
 
 function renderMonth(){
