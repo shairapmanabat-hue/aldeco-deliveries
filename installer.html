@@ -343,6 +343,10 @@ var ALDECO_API = 'https://script.google.com/macros/s/AKfycbwJlrrAoaWLxRU8VgcgKAk
   function slug(n){ return 'n-'+String(n).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
   var login=getLogin();
   var isInstallerPage=/installer(\.html)?$/.test(location.pathname);
+  // Installer link with a secret code (?k=...) — no name or PIN needed
+  var urlKey=new URLSearchParams(location.search).get('k');
+  var badKey=''; try{ badKey=sessionStorage.getItem('aldecoBadKey')||''; }catch(e){}
+  if(isInstallerPage && urlKey && urlKey!==badKey){ login={name:'Installer',role:'installer',key:urlKey}; setLogin(login); }
   if(login){
     try{ localStorage.setItem('aldecoUid',slug(login.name)); }catch(e){}
     if(login.role==='installer' && !isInstallerPage){ location.replace('installer.html'); }
@@ -353,8 +357,8 @@ var ALDECO_API = 'https://script.google.com/macros/s/AKfycbwJlrrAoaWLxRU8VgcgKAk
   function ready(){ return login?Promise.resolve(login):new Promise(function(r){ waiters.push(r); }); }
   function callApi(fn,args){
     if(fn==='api_url') return Promise.resolve(location.origin+location.pathname);
-    return ready().then(function(l){ return post({fn:fn,args:args,user:l.name,pin:l.pin}); }).then(function(j){
-      if(!j.ok){ if(j.error==='LOGIN'){ setLogin(null); location.reload(); } throw new Error(j.error||'Server error'); }
+    return ready().then(function(l){ return post(l.key?{fn:fn,args:args,key:l.key}:{fn:fn,args:args,user:l.name,pin:l.pin}); }).then(function(j){
+      if(!j.ok){ if(j.error==='LOGIN'){ if(login&&login.key){ try{ sessionStorage.setItem('aldecoBadKey',login.key); }catch(e){} } setLogin(null); location.reload(); } throw new Error(j.error||'Server error'); }
       return j.result; });
   }
   function runner(ok,fail){
