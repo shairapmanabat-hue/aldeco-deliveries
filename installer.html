@@ -346,19 +346,20 @@ var ALDECO_API = 'https://script.google.com/macros/s/AKfycbwJlrrAoaWLxRU8VgcgKAk
   // Installer link with a secret code (?k=...) — no name or PIN needed
   var urlKey=new URLSearchParams(location.search).get('k');
   var badKey=''; try{ badKey=sessionStorage.getItem('aldecoBadKey')||''; }catch(e){}
-  if(isInstallerPage && urlKey && urlKey!==badKey){ login={name:'Installer',role:'installer',key:urlKey}; setLogin(login); }
+  var instKey=''; try{ if(isInstallerPage && urlKey && urlKey!==badKey) localStorage.setItem('aldecoInstKey',urlKey); instKey=localStorage.getItem('aldecoInstKey')||''; }catch(e){ instKey=urlKey||''; }
+  if(isInstallerPage && instKey && instKey!==badKey){ login={name:'Installer',role:'installer',key:instKey}; }
   if(login){
     try{ localStorage.setItem('aldecoUid',slug(login.name)); }catch(e){}
     if(login.role==='installer' && !isInstallerPage){ location.replace('installer.html'); }
   }
-  window.aldecoLogin={ get:function(){ return login; }, logout:function(){ setLogin(null); try{ localStorage.removeItem('aldecoUid'); }catch(e){} location.reload(); } };
+  window.aldecoLogin={ get:function(){ return login; }, logout:function(){ setLogin(null); try{ localStorage.removeItem('aldecoUid'); localStorage.removeItem('aldecoInstKey'); }catch(e){} location.reload(); } };
   function post(body){ return fetch(ALDECO_API,{method:'POST',body:JSON.stringify(body)}).then(function(r){ return r.json(); }); }
   var waiters=[];
   function ready(){ return login?Promise.resolve(login):new Promise(function(r){ waiters.push(r); }); }
   function callApi(fn,args){
     if(fn==='api_url') return Promise.resolve(location.origin+location.pathname);
     return ready().then(function(l){ return post(l.key?{fn:fn,args:args,key:l.key}:{fn:fn,args:args,user:l.name,pin:l.pin}); }).then(function(j){
-      if(!j.ok){ if(j.error==='LOGIN'){ if(login&&login.key){ try{ sessionStorage.setItem('aldecoBadKey',login.key); }catch(e){} } setLogin(null); location.reload(); } throw new Error(j.error||'Server error'); }
+      if(!j.ok){ if(j.error==='LOGIN'){ if(login&&login.key){ try{ sessionStorage.setItem('aldecoBadKey',login.key); localStorage.removeItem('aldecoInstKey'); }catch(e){} } else setLogin(null); location.reload(); } throw new Error(j.error||'Server error'); }
       return j.result; });
   }
   function runner(ok,fail){
