@@ -322,6 +322,7 @@ table.kvt{border-collapse:collapse;width:100%;font-size:13px}
   <div class="spacer"></div>
   <button class="btn sm" id="installBtn">Install on this phone</button>
   <span class="chip" id="roleChip" title="Your role">Loading…</span>
+  <button class="btn" id="orderLinkBtn" style="display:none">Customer order link</button>
   <button class="btn primary" id="newBtn" style="display:none">+ New delivery request</button>
 </div></header>
 <div class="banner" id="banner"></div>
@@ -517,7 +518,7 @@ function mondayOf(s){const d=parseD(s);const w=(d.getDay()+6)%7;d.setDate(d.getD
 function fmtD(s,opt){ if(!s) return '—'; return parseD(s).toLocaleDateString('en-PH',opt||{weekday:'short',month:'short',day:'numeric'}) }
 function fmtLong(s){return fmtD(s,{weekday:'long',month:'long',day:'numeric',year:'numeric'})}
 function fmtTime(ms){ if(!ms) return ''; const d=new Date(ms); return d.toLocaleDateString('en-PH',{month:'short',day:'numeric'})+' '+d.toLocaleTimeString('en-PH',{hour:'numeric',minute:'2-digit'}) }
-function nameOf(id){ if(!id) return 'Someone'; if(id===me.id) return (names[id]||'You'); return names[id]||'Someone' }
+function nameOf(id){ if(!id) return 'Someone'; if(id==='customer') return 'Customer'; if(id===me.id) return (names[id]||'You'); return names[id]||'Someone' }
 function truckName(id){ const t=(config.trucks||[]).find(t=>t.id===id); return t?t.name:(id?'Removed driver':'No driver yet') }
 function sc(st){return (STATUS[st]||STATUS.requested).color}
 function role(){ return mode==='sales'?'sales':mode==='installer'?'delivery':(isOwnerViewer?'owner':me.role) }
@@ -596,6 +597,7 @@ function readHash(){
 window.addEventListener('hashchange',()=>{readHash();closeDrawer();render()});
 readHash();
 document.getElementById('newBtn').addEventListener('click',()=>requestForm());
+document.getElementById('orderLinkBtn').addEventListener('click',()=>orderLinkModal());
 document.getElementById('installBtn').addEventListener('click',()=>installGuide());
 function installGuide(){
   const root=BASE_URL.replace(/(index|installer)\.html$/,''); const url=root+(mode==='installer'?'installer.html':'');
@@ -651,6 +653,7 @@ function render(){
   const nb=document.getElementById('newBtn');
   nb.style.display = (isSales()&&canWrite&&mode!=='installer')?'':'none';
   nb.textContent = mode==='sales' ? '+ New request' : '+ New delivery request';
+  const olb=document.getElementById('orderLinkBtn'); if(olb) olb.style.display=nb.style.display;
   const main=document.getElementById('main');
   if(view!=='installer'){ const gb=document.getElementById('gbar'); if(gb) gb.remove(); }
   if(gridFocused()){ gridPending=true; if(openId) renderDrawer(); return; }
@@ -1447,11 +1450,31 @@ function renderDrawer(){
     h('div',{class:'db'},
       acts.children.length?h('div',{class:'sec'},h('h4',null,'What to do next'),acts):null,
       schedSec,
+      d.source?h('div',{class:'infobox',style:'margin:0 0 14px'},h('b',null,'Sent by the customer'),' through the order form'+(d.orderRef?' · ref '+d.orderRef:'')+(d.salesAgent?' · link from '+d.salesAgent:'')+(d.preferredDate?' · preferred date '+fmtD(d.preferredDate):'')+(d.mapLink?'':' · no pin location yet')):null,
       h('div',{class:'sec'},h('h4',null,'Delivery details'),detailTable(d)),
       h('div',{class:'sec'},h('h4',null,'History'),
         h('ul',{class:'hist'},(d.history||[]).slice().reverse().map(x=>h('li',null,x.text,h('small',null,nameOf(x.by)+' · '+fmtTime(x.at))))))
     )
   );
+}
+
+function orderLinkModal(){
+  const base=location.origin+location.pathname.replace(/[^\/]*$/,'')+'order.html';
+  const who=(window.aldecoLogin&&aldecoLogin.get()&&aldecoLogin.get().name)||'';
+  const so=h('input',{placeholder:'Optional — e.g. 650'});
+  const box=h('input',{readonly:true,style:'font-size:13px'});
+  const upd=()=>{ const p=new URLSearchParams(); if(who&&who!=='Admin') p.set('by',who); if(so.value.trim()) p.set('so',so.value.trim()); const qs=p.toString(); box.value=base+(qs?'?'+qs:''); };
+  so.addEventListener('input',upd); upd();
+  const msg=()=>'Hi! Thank you for your order with Aldeco Furniture. Please fill in your delivery details here so we can schedule your delivery: '+box.value;
+  const cp=async(t,ok)=>{ try{ await navigator.clipboard.writeText(t); toast(ok); }catch(e){ box.select(); toast('Select the link and copy it'); } };
+  modal({title:'Customer order link',cancelLabel:'Close',body:h('div',null,
+    h('p',{class:'sub',style:'margin-top:0'},'Send this link to a customer who wants to proceed. What they fill in appears here under My deliveries as "Not scheduled", ready for you to set the date.'),
+    F('SO number for this customer',so),
+    F('Link',box),
+    h('div',{class:'row',style:'display:flex;gap:8px;flex-wrap:wrap'},
+      h('button',{class:'btn primary',onclick:()=>cp(box.value,'Link copied')},'Copy link'),
+      h('button',{class:'btn',onclick:()=>cp(msg(),'Message copied — paste it in Messenger')},'Copy message with link'),
+      h('a',{class:'btn ghost',href:box.value,target:'_blank',onclick:e=>{e.currentTarget.href=box.value}},'Preview')))});
 }
 
 /* ---------- modal ---------- */
